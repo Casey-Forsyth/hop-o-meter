@@ -1,1 +1,1 @@
-# hop-o-meter
+# Hop O Meter

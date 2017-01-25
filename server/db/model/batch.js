@@ -5,13 +5,21 @@ Schema = mongoose.Schema;
 var batchSchema = mongoose.Schema({
 
     kegNum:{ type: Number, min: 0, max: 99 },
-    minV:Number,
-    maxV:Number,
-    sizeMl:Number,
+    beer:{
+    	name:String,
+    	color:String
+    },
     startedAt:{ type: Date, default: Date.now },
-    user: { type: Schema.Types.ObjectId, ref: 'User' }
+    endedAt:{ type: Date},
+    user: { type: Schema.Types.ObjectId, ref: 'User' },
+	ml:[]
 
 });
+
+batchSchema.pre("save", function (next) {
+  delete this.ml
+  next()
+})
 
 
 

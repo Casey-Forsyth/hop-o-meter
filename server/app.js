@@ -42,6 +42,11 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 
 
 require('./routes/login.js')(app, passport);
+require('./routes/kegConfigs.js')(app, passport);
+require('./routes/profile.js')(app, passport);
+require('./routes/batch.js')(app, passport);
+require('./routes/sensorValues.js')(app, passport);
+require('./routes/batches.js')(app, passport);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

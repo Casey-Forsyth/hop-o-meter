@@ -11,6 +11,10 @@ var userSchema = mongoose.Schema({
         email        : String,
         password     : String,
     },
+    beerUnits:{
+        name:{ type: String, default: "Imperial Pints" },
+        sizeInML:{ type: String, default: 568  }
+    },
     kegMeterApiKey : {
         type: String,
         default: function() {

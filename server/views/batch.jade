@@ -1,0 +1,23 @@
+extends ./layout
+
+
+
+block title  
+  title Beer Batches
+
+block content  
+
+    .container
+      .col-sm-12
+        h1 On Tap
+
+    #batchHolder.container  
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.1.1/Chart.js")
+    script(src="/javascripts/chart.scatter.js")
+    script(src='https://code.jquery.com/jquery-3.1.1.js', integrity='sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA=', crossorigin='anonymous')
+    script(src="/javascripts/batch.js")
+    script(type='text/javascript')
+      | var batchView =!{JSON.stringify(batchView)}
+      | var batches =!{JSON.stringify(batches)}
+
+

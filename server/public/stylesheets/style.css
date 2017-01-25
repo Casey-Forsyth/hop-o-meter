@@ -1,8 +1,31 @@
 body {
-  padding: 50px;
+  padding: 1em;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
 a {
   color: #00B7FF;
+}
+
+h1{
+	text-align: center;
+
+}
+
+.batchDiv h2{
+	    text-align: center;
+}
+
+.batchDiv .number{
+	    text-align: center;
+	    font-size:7em;
+}
+
+.batchDiv .units{
+	    text-align: center;
+}
+
+
+.batchDiv canvas {
+	margin-top: 3em;
 }

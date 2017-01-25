@@ -1,7 +1,19 @@
 doctype html
+// views/login.ejs
 html
   head
-    title= title
+    block title
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    link(rel='stylesheet', href='//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css')
+    // load bootstrap css
+    link(rel='stylesheet', href='//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css')
+    // load fontawesome
+
     link(rel='stylesheet', href='/stylesheets/style.css')
+
   body
     block content
+
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.1.1/Chart.js")
+    script(src="/javascripts/chart.scatter.js")
+    script(src='https://code.jquery.com/jquery-3.1.1.js', integrity='sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA=', crossorigin='anonymous')

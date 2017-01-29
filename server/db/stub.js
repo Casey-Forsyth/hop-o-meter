@@ -5,6 +5,7 @@ var User            = require('./model/user');
 var SensorPoint     = require('./model/sensorPoint');
 var Batch     		= require('./model/batch');
 var KegConfig     		= require('./model/kegConfig');
+var TemperaturePoint     		= require('./model/temperaturePoint');
 
 var passHash = "$2a$08$.r65Be7obffOBkUKnDfR7ejdwBUoCYDR./TWTPZCS73FkKCWzDTCy";
 var testEmail = "test.invalid"
@@ -20,17 +21,17 @@ var userInstance = new User({local:{
 
 
 var STEPSIZE = 1*60*1000
-function generateFakeWeights (kegNum,start,end,low,high,fillPeriod) {
+hours = 1
+function generateSensorPoints (kegNum,start,end,low,high,fillPeriod) {
 	
 	var out = [];
 
-	var cT = start;
-	console.log(cT)
+	var cT = start.getTime();
+	var start = start.getTime();
+	var end = end.getTime();
 
 	while (cT < end) {
-		console.log(cT)
-
-		var posInCycle = (cT % fillPeriod)/fillPeriod
+		var posInCycle = ((cT-start) % (fillPeriod))/fillPeriod
 		var heightChange = low - high;
 		var val = high + heightChange * posInCycle
 
@@ -44,37 +45,9 @@ function generateFakeWeights (kegNum,start,end,low,high,fillPeriod) {
 		cT = cT + STEPSIZE;
 
 	}
-
+	hours = (hours +1) % 12
 	return out
 }
-
-
-hours = 1
-function generateFakeML(full,start,end){
-	var out = [];
-	var cT = start;
-
-	while(cT<end- (12 - hours)*60*60*1000){
-		var per = (cT-start) / (end - start)
-		out.push({ml:full - full*per, t: cT});
-		cT = cT + STEPSIZE;
-	}
-
-	hours = (hours +1) % 12
-
-	return out;
-}
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -104,7 +77,13 @@ function saveUser (user,cb) {
 	
 }
 
-function saveNewKegConfig (user,cb) {
+function setBeerUnits (user,newConfig,cb) {
+
+	cb(null)
+	
+}
+
+function setTemperatureUnits (user,newConfig,cb) {
 
 	cb(null)
 	
@@ -115,7 +94,10 @@ function saveNewKegConfig (user,cb) {
 
 function getSensorPoint (user,kegNum,start,end,cb){
 
-	cb(generateFakeWeights(kegNum,start,end,0.1,5.4,24*60*60*1000))
+	var bottom = Math.random() * 3.0;
+	var start = new Date(start);
+	var end = new Date(end)
+	cb(null,generateSensorPoints(kegNum,start,end,bottom,5.4,end.getTime() - start.getTime() ));
 
 }
 
@@ -126,8 +108,8 @@ function getSensorDataForLast (user,kegs,period,cb) {
 	var out = {};
 	var dataCount = 0;
 	for (var i = 0; i < kegs.length; i++) {
-		
-		getSensorPoint(user,kegs[i],now,now+period,function (data) {
+
+		getSensorPoint(user,kegs[i],now,now+period,function (err,data) {
 			
 			out[kegs[i]] = data
 			dataCount++;
@@ -184,32 +166,50 @@ function getNewestBatches (user,cb) {
 
 	var out = [];
 
-	var start = Date.now();
+	var start = Date.now() - 24*60*60*1000;
+
+
 
 	out.push(new Batch({kegNum:0,
 				beer:{name:"Amber Ale", color:"#b74300"},
 			    startedAt:start,
 			    user: user,
-				ml:generateFakeML(19000,start,start + 18*60*60*1000)}));
+				ml:[]}));
 
 
 	out.push(new Batch({kegNum:1,
 				beer:{name:"Cream Ale", color:"#ed9717"},
 			    startedAt:start,
 			    user: user,
-				ml:generateFakeML(19000,start,start + 18*60*60*1000)}));
+				ml:[]}));
 
+	// out.push(new Batch({kegNum:2,
+	// 			beer:{name:"Cream Ale", color:"#ed9717"},
+	// 		    startedAt:start,
+	// 		    user: user,
+	// 			ml:[]}));
+
+	// out.push(new Batch({kegNum:3,
+	// 			beer:{name:"Cream Ale", color:"#ed9717"},
+	// 		    startedAt:start,
+	// 		    user: user,
+	// 			ml:[]}));
+
+	// out.push(new Batch({kegNum:4,
+	// 			beer:{name:"Cream Ale", color:"#ed9717"},
+	// 		    startedAt:start,
+	// 		    user: user,
+	// 			ml:[]}));
 
 	cb(null,out)
+
+	
 }
-
-
-
 
 function getCurrentKegConfigs (user,cb) {
 
 	var out = [];
-	out.push(new KegConfig({
+	out[0] = new KegConfig({
 
 	    kegNum:0,
 	    minV:0.1,
@@ -217,9 +217,9 @@ function getCurrentKegConfigs (user,cb) {
 	    sizeMl:19000,
 	    user: user
 
-	}));
+	});
 
-	out.push(new KegConfig({
+	out[1]= new KegConfig({
 
 	    kegNum:1,
 	    minV:0.1,
@@ -227,10 +227,84 @@ function getCurrentKegConfigs (user,cb) {
 	    sizeMl:19000,
 	    user: user
 
-	}));
+	});
+
+
+
+
+	// out[3] = new KegConfig({
+
+	//     kegNum:3,
+	//     minV:0.1,
+	//     maxV:3.0,
+	//     sizeMl:19000,
+	//     user: user
+
+	// });
+
+	// out[4] = new KegConfig({
+
+	//     kegNum:4,
+	//     minV:0.1,
+	//     maxV:3.0,
+	//     sizeMl:19000,
+	//     user: user
+
+	// }) ;
 
 	cb(null,out);
 }
+
+
+function getCurrentKegConfig (user,kegNum,cb) {
+
+	getCurrentKegConfigs(user,function (err,configs) {
+
+		var toSend = configs[kegNum];
+		if(toSend){
+			cb(null,toSend);
+		}else{
+			cb("Missing Config",null);
+		}
+
+	})
+
+}
+
+function setKegConfig (user,config,configData,cb) {
+	cb(null)
+}
+
+
+var FAKE_TOP = 10;
+var FAKE_BOTTOM = 5;
+var FAKE_PERIOD = 24*60*60*1000;
+
+function getTemperatures (user, start, end ,cb) {
+
+	var out = [];
+
+	var cT = start.getTime();
+	var start = start.getTime();
+	var end = end.getTime();
+
+
+	
+	while (cT < end){
+
+
+		out.push(new TemperaturePoint({
+			recordedAt:cT,
+			value: Math.sin(((cT-start)/FAKE_PERIOD) * Math.PI) * (FAKE_TOP - FAKE_BOTTOM)/2 + FAKE_BOTTOM + (FAKE_TOP - FAKE_BOTTOM)/2
+		}))
+
+		cT += 60*60*1000;
+	}
+
+	cb(null,out)
+
+}
+
 
 module.exports = {
 	'findUserByEmail':findUserByEmail,
@@ -240,5 +314,10 @@ module.exports = {
 	'getSensorPoint':getSensorPoint,
 	'getSensorDataForLast':getSensorDataForLast,
 	'getNewestBatches':getNewestBatches,
-	'getCurrentKegConfigs':getCurrentKegConfigs
+	'getCurrentKegConfig':getCurrentKegConfig,
+	'getCurrentKegConfigs':getCurrentKegConfigs,
+	'setKegConfig':setKegConfig,
+	'getTemperatures':getTemperatures,
+	'setBeerUnits':setBeerUnits,
+	'setTemperatureUnits':setTemperatureUnits
 } 

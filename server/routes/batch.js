@@ -1,6 +1,7 @@
 // app/routes.js
 
 
+var batchesLogic            = require('../logic/batchesLogic.js');
 var db            = require('../db/db.js');
 var isLoggedIn = require('./isLoggedIn');
 
@@ -23,12 +24,20 @@ module.exports = function(app, passport) {
     });
 
     function displayBatchView (user,res) {
-        db.getNewestBatches(user,function(err,batches){
-            res.render('batch.jade', {
-                batchView : user.beerUnits,
-                batches : batches 
+        batchesLogic.getNewestBatchesForAllKegs(user,function(err,batches){
+
+            var end = new Date();
+            var start = new Date(end.getTime() - 7*24*60*60*1000);
+
+            db.getTemperatures(user,start,end,function(err,temperatures){
+                res.render('batch.jade', {
+                    batchView : user.beerUnits,
+                    batches : batches,
+                    temperatureUnits : user.temperatureUnits,
+                    temperatures : temperatures
+                });
             });
-        })
+        });
     }
 
 

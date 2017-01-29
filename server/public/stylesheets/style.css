@@ -11,6 +11,9 @@ h1{
 	text-align: center;
 
 }
+.batchDiv{
+	min-height: 35em;
+}
 
 .batchDiv h2{
 	    text-align: center;
@@ -25,7 +28,27 @@ h1{
 	    text-align: center;
 }
 
+.batchDiv .error{
+	text-align: center;
+    padding-top: 8em;
+    font-size: 1.5em;
+}
+
 
 .batchDiv canvas {
 	margin-top: 3em;
+}
+
+
+#temperatureHolder{
+	margin-top: 3em;
+}
+
+.temperatureValue{
+	text-align: center;
+	margin-top: 3em;
+}
+
+.temperatureValue .value{
+    font-size:7em;
 }

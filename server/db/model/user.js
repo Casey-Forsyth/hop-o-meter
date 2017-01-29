@@ -13,7 +13,13 @@ var userSchema = mongoose.Schema({
     },
     beerUnits:{
         name:{ type: String, default: "Imperial Pints" },
-        sizeInML:{ type: String, default: 568  }
+        sizeInML:{ type: Number, default: 568  }
+    },
+    temperatureUnits:{
+        shortName:{ type: String, default: "C" },
+        longName:{ type: String, default: "Dungarees Centigrade" },
+        ratio:{ type: Number, default: 1  },
+        offset:{ type: Number, default: 0  }
     },
     kegMeterApiKey : {
         type: String,

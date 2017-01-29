@@ -1,0 +1,73 @@
+extends ./layout
+
+
+
+block title  
+  title Keg Setup
+
+block content  
+
+    .container
+      .col-sm-12
+        h1 Setup
+    
+    #beerUnits.container 
+      .col-xs-12
+        h2 Beer Units
+      .col-xs-12.col-md-6
+        form
+
+        .form-group
+          label(for='presetBeerUnits') Preset Beer Units
+          select#presetBeerUnits.form-control
+          a.btn.btn-secondary(role='button', data-toggle='collapse', href='#advancedBeerUnits', aria-expanded='false', aria-controls='advancedBeerUnits')
+            | View Advanced
+      .row
+        .col-xs-12.col-md-6
+          .collapse#advancedBeerUnits
+            .form-group
+              label(for='beerUnitName') Unit Name
+              input#beerUnitName.form-control(type='string', placeholder='Enter Name For Units')
+            .form-group
+              label(for='beerUnitSize') Volume (ML)
+              input#beerUnitSize.form-control(type='number', placeholder='Enter keg volume in ml')
+      .row
+        .col-xs-12
+          
+
+          button.saveBeerUnits.btn.btn-primary( type="button") Save
+
+    #temperatureUnits.container 
+      .col-xs-12
+        h2 Temperature Units
+      .row
+        .col-xs-12.col-md-6
+          form
+
+          .form-group
+            label(for='presetTemperatureUnits') Temperature Units
+            select#presetTemperatureUnits.form-control
+      .row
+        .col-xs-12
+          button.saveTemperatureUnits.btn.btn-primary( type="button") Save
+
+
+    .container  
+      .col-xs-12
+        h2 Keg Config
+      #configHolder
+
+
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.1.1/Chart.js")
+    script(src="/javascripts/chart.scatter.js")
+    script(src='https://code.jquery.com/jquery-3.1.1.js', integrity='sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA=', crossorigin='anonymous')
+    script(src="/javascripts/kegConfig.js")
+    script(src="/javascripts/beerUnits.js")
+    script(src="/javascripts/temperatureUnits.js")
+    script(type='text/javascript')
+      | var configs =!{JSON.stringify(configs)}
+      | var sensorData =!{JSON.stringify(sensorData)}
+      | var currentBeerUnits =!{JSON.stringify(beerUnits)}
+      | var currentTemperatureUnits =!{JSON.stringify(temperatureUnits)}
+
+

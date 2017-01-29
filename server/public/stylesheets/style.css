@@ -52,3 +52,11 @@ h1{
 .temperatureValue .value{
     font-size:7em;
 }
+
+
+hr {
+    height: 1px;
+    background-color:#AAA;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}

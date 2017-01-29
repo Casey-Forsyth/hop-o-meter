@@ -12,16 +12,18 @@ block content
         h1 Setup
     
     #beerUnits.container 
-      .col-xs-12
-        h2 Beer Units
-      .col-xs-12.col-md-6
-        form
+      .row
+        .col-xs-12
+          h2 Beer Units
+      .row  
+        .col-xs-12.col-md-6
+          form
 
-        .form-group
-          label(for='presetBeerUnits') Preset Beer Units
-          select#presetBeerUnits.form-control
-          a.btn.btn-secondary(role='button', data-toggle='collapse', href='#advancedBeerUnits', aria-expanded='false', aria-controls='advancedBeerUnits')
-            | View Advanced
+          .form-group
+            label(for='presetBeerUnits') Preset Beer Units
+            select#presetBeerUnits.form-control
+            a.btn.btn-secondary(role='button', data-toggle='collapse', href='#advancedBeerUnits', aria-expanded='false', aria-controls='advancedBeerUnits')
+              | View Advanced
       .row
         .col-xs-12.col-md-6
           .collapse#advancedBeerUnits
@@ -36,10 +38,11 @@ block content
           
 
           button.saveBeerUnits.btn.btn-primary( type="button") Save
-
+      hr
     #temperatureUnits.container 
-      .col-xs-12
-        h2 Temperature Units
+      .row
+        .col-xs-12
+          h2 Temperature Units
       .row
         .col-xs-12.col-md-6
           form
@@ -51,10 +54,11 @@ block content
         .col-xs-12
           button.saveTemperatureUnits.btn.btn-primary( type="button") Save
 
-
+      hr
     .container  
-      .col-xs-12
-        h2 Keg Config
+      .row
+        .col-xs-12
+          h2 Keg Config
       #configHolder
 
 

@@ -25,6 +25,12 @@ function createBatchDiv (batch) {
 
 
 
+
+		if(isAdmin)
+			mainDiv.append(createAdminBatchBar(batch));
+
+
+
 	
 		var numberDiv = $("<div>");
 		var numSpan =  $("<div>");
@@ -56,6 +62,31 @@ function createBatchDiv (batch) {
 
 	return mainDiv
 }
+
+function createAdminBatchBar(batch){
+	var adminDiv = $("<div>")
+	adminDiv.addClass("adminBar")
+	
+	var newBatchButton = $("<button type=\"button\" class=\"btn btn-default\" aria-label=\"New Batch\"> <span class=\"glyphicon glyphicon-star\" aria-hidden=\"true\"></span></button>")
+	adminDiv.append(newBatchButton)
+
+	new newBatchUI(newBatchButton,function (msg) {
+		toastr.success(msg)
+	},
+	function (msg) {
+		toastr.error("ERROR:" + msg)
+	})
+
+	var changeSettingsBtn = $("<a href=\"/setup#KegNum"+batch.kegNum+"\" type=\"button\" class=\"btn btn-default\" aria-label=\"New Batch\"> <span class=\"glyphicon glyphicon-wrench\" aria-hidden=\"true\"></span></a>")
+	adminDiv.append(changeSettingsBtn)
+
+
+	return adminDiv;
+
+
+
+}
+
 
 function addChartAfterAppend(currDiv,batch){
 	var chartCan = currDiv.find("canvas");
@@ -137,8 +168,13 @@ function createTemperatureDiv () {
 
 	temperatureValueDiv.append(numberDiv);
 	temperatureValueDiv.append(unitsDiv);
-
 	$("#temperatureHolder").append(temperatureValueDiv);
+
+	if(isAdmin){
+		var changeSettingsBtn = $("<a type=\"button\" href=\"/setup#temperatureUnits\" class=\"btn btn-default\" aria-label=\"New Batch\"> <span class=\"glyphicon glyphicon-wrench\" aria-hidden=\"true\"></span></a>")
+		temperatureValueDiv.append(changeSettingsBtn)
+	}
+	
 
 	var temperatureChartDiv = $("<div>")
 	
@@ -234,11 +270,18 @@ function fillAllViews () {
 
 
 
+
+
 $(function () {
 	
 
 	clearViews();
 	fillAllViews();
+
+	
+
+
+
 })
 
 

@@ -9,18 +9,56 @@ block content
 
     .container
       .col-sm-12
-        h1 Internet of Kegs
+        if admin
+          h1 Internet of Kegs - Admin
+        else
+          h1 Internet of Kegs
 
     #batchHolder.container  
     #temperatureHolder.container  
+
+
+
+    // Button trigger modal
+    #newBatchModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel')
+      .modal-dialog(role='document')
+        .modal-content
+          .modal-header
+            button.close(type='button', data-dismiss='modal', aria-label='Close')
+              span(aria-hidden='true') ×
+            h4#myModalLabel.modal-title New Batch in Keg 
+              script.kegNum 
+              | N
+          .modal-body
+            form
+              .form-group
+                label.control-label(for='beer-name') Beer Name:
+                input#beer-name.form-control(type='text')
+              .form-group
+                label.control-label(for='beer-color') Color:
+                input#beer-color.form-control(type='text', name='beer-color')
+
+
+
+
+          .modal-footer
+            button.btn.btn-default#close-btn(type='button', data-dismiss='modal') Close
+            button.btn.btn-primary#save-btn(type='button') Save changes
+
+block scripts
+    script(src="/javascripts/newBatch.js")
+
     script(src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.1.1/Chart.js")
     script(src="/javascripts/chart.scatter.js")
-    script(src='https://code.jquery.com/jquery-3.1.1.js', integrity='sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA=', crossorigin='anonymous')
+    
     script(src="/javascripts/batch.js")
+
     script(type='text/javascript')
       | var batchView =!{JSON.stringify(batchView)}
       | var batches =!{JSON.stringify(batches)}
       | var temperatures =!{JSON.stringify(temperatures)}
       | var temperatureUnits =!{JSON.stringify(temperatureUnits)}
+      | var isAdmin =!{JSON.stringify(admin)}
+
 
 

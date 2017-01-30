@@ -9,7 +9,10 @@ function createKegDiv (config) {
 	mainDiv.addClass("kegConfigDiv")
 	mainDiv.addClass("col-xs-12")
 	var nameDiv = $("<div>")
-	var nameh2 = $("<h2>").html("Keg Number: " + (config.kegNum+1));
+	var nameh2 = $("<h2>")
+	nameh2.html("Keg Number: " + (config.kegNum+1));		
+	nameh2.attr("id","KegNum"+config.kegNum)
+
 	nameDiv.append(nameh2)
 
 	mainDiv.append(nameDiv);
@@ -234,13 +237,21 @@ function fillAllViews () {
 }
 
 
-
+function scrollToHash(){
+	if (window.location.hash ) {
+	    $('html, body').animate({
+	        scrollTop: $(window.location.hash).offset().top
+	    }, 1000);
+	}
+}
 
 $(function () {
 	
 
 	clearViews();
 	fillAllViews();
+
+	scrollToHash()
 })
 
 

@@ -48,6 +48,7 @@ require('./routes/batch.js')(app, passport);
 require('./routes/sensorValues.js')(app, passport);
 require('./routes/batches.js')(app, passport);
 require('./routes/setup.js')(app, passport);
+require('./routes/deviceUploads.js')(app, passport);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

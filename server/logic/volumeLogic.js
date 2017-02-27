@@ -9,13 +9,13 @@ function getVolumeMeasurements (start,end,user,kegNum,cb) {
 
 		db.getCurrentKegConfig(user,kegNum,function (err,config) {
 			if( typeof config =='undefined' || config == null || err){
-				cb("Missing Configuration",null);
+				cb("Missing Configuration",kegNum,null);
 			}else{
 				if(sensorPoints && sensorPoints.length>0){
 					var mls = process(config,sensorPoints);
-					cb(null,mls);
+					cb(null,kegNum,mls);
 				} else {
-					cb("Missing Data Points",null);
+					cb("Missing Data Points",kegNum,null);
 				}
 				
 			}

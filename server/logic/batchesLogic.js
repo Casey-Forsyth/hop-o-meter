@@ -18,12 +18,12 @@ function getNewestBatchesForAllKegs (user,cb) {
 				var end		= new Date();
 				var kegNum	= curBatch.kegNum;
 
-				volumeLogic.getVolumeMeasurements(start,end,user,kegNum,function (err,volume) {
+				volumeLogic.getVolumeMeasurements(start,end,user,kegNum,function (err,kegNum,volume) {
 					
 					if(err){
-						batches[i] = {error:err};
+						batches[kegNum] = {error:err};
 					}else{
-						batches[i].ml = volume;
+						batches[kegNum].ml = volume;
 					}
 
 					count++

@@ -5,9 +5,9 @@ Schema = mongoose.Schema;
 var batchSchema = mongoose.Schema({
 
     kegNum:{ type: Number, min: 0, max: 99 },
-    minV:Number,
-    maxV:Number,
-    sizeMl:Number,
+    minV:{ type: Number, default: 0 },
+    maxV:{ type: Number, default: 5 },
+    sizeMl:{ type: Number, default: 19000 },
     setAtTime:{ type: Date, default: Date.now },
     user: { type: Schema.Types.ObjectId, ref: 'User' }
 

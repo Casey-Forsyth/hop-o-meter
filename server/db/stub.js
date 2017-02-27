@@ -125,43 +125,6 @@ function getSensorDataForLast (user,kegs,period,cb) {
 	
 }
 
-
-function getAllBatches(user,start,end,cb){
-
-	var out = [];
-
-	out.push(new Batch({kegNum:0,
-				beer:{name:"Amber Ale", color:"#FF0000"},
-			    startedAt:start,
-			    user: user,
-				ml:generateFakeML(19000,start,start + 18*60*60*1000)}));
-
-
-	out.push(new Batch({kegNum:1,
-				beer:{name:"Cream Ale", color:"#FF0000"},
-			    startedAt:start,
-			    user: user,
-				ml:generateFakeML(19000,start,start + 18*60*60*1000)}));
-
-
-	out.push(new Batch({kegNum:0,
-				beer:{name:"Honey Hops", color:"#FF0000"},
-			    startedAt:start+24*60*60*1000,
-			    user: user,
-				ml:generateFakeML(19000,start+24*60*60*1000,start + 42*60*60*1000)}));
-
-
-	out.push(new Batch({kegNum:1,
-				beer:{name:"Blond", color:"#FF0000"},
-			    startedAt:start+24*60*60*1000,
-			    user: user,
-				ml:generateFakeML(19000,start+24*60*60*1000,start + 42*60*60*1000)}));
-
-	cb(null,out)
-
-}
-
-
 function getNewestBatches (user,cb) {
 
 	var out = [];
@@ -183,23 +146,6 @@ function getNewestBatches (user,cb) {
 			    user: user,
 				ml:[]}));
 
-	// out.push(new Batch({kegNum:2,
-	// 			beer:{name:"Cream Ale", color:"#ed9717"},
-	// 		    startedAt:start,
-	// 		    user: user,
-	// 			ml:[]}));
-
-	// out.push(new Batch({kegNum:3,
-	// 			beer:{name:"Cream Ale", color:"#ed9717"},
-	// 		    startedAt:start,
-	// 		    user: user,
-	// 			ml:[]}));
-
-	// out.push(new Batch({kegNum:4,
-	// 			beer:{name:"Cream Ale", color:"#ed9717"},
-	// 		    startedAt:start,
-	// 		    user: user,
-	// 			ml:[]}));
 
 	cb(null,out)
 
@@ -231,26 +177,6 @@ function getCurrentKegConfigs (user,cb) {
 
 
 
-
-	// out[3] = new KegConfig({
-
-	//     kegNum:3,
-	//     minV:0.1,
-	//     maxV:3.0,
-	//     sizeMl:19000,
-	//     user: user
-
-	// });
-
-	// out[4] = new KegConfig({
-
-	//     kegNum:4,
-	//     minV:0.1,
-	//     maxV:3.0,
-	//     sizeMl:19000,
-	//     user: user
-
-	// }) ;
 
 	cb(null,out);
 }
@@ -306,6 +232,19 @@ function getTemperatures (user, start, end ,cb) {
 }
 
 
+function insertNewSensorData (kegMeterApiKey,kegNum,val ,cb) {
+
+	cb(null)
+
+}
+
+function insertNewTemperatureData (kegMeterApiKey,val ,cb) {
+
+	cb(null)
+
+}
+
+
 module.exports = {
 	'findUserByEmail':findUserByEmail,
 	'findUserById':findUserById,
@@ -319,5 +258,7 @@ module.exports = {
 	'setKegConfig':setKegConfig,
 	'getTemperatures':getTemperatures,
 	'setBeerUnits':setBeerUnits,
-	'setTemperatureUnits':setTemperatureUnits
+	'setTemperatureUnits':setTemperatureUnits,
+	'insertNewSensorData':insertNewSensorData,
+	'insertNewTemperatureData':insertNewTemperatureData
 } 

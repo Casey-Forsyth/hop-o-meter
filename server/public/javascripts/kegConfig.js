@@ -75,34 +75,39 @@ function buildControls (config) {
 		onConfigInputChange(config,$(this).closest(".kegConfigDiv"))
 	})
 
-	all.find(".saveConfig").click(function (e) {
-		
-		sendConfigToServer(config);
-
-	})
+	setOnClickForSave(all.find(".saveConfig"),config);
+	
 
 	controlDiv.append(all);
 	return controlDiv;
 
 }
 
+function setOnClickForSave (btn,config) {
+	btn.click(function (e) {
+		
+		sendConfigToServer(config.kegNum);
 
-function sendConfigToServer (config) {
+	})
+}
+
+
+function sendConfigToServer (kegNum) {
 	
 	var dToSend = {
 		config:{
-			minV 	: config.minV,
-			maxV 	: config.minV,
-			sizeMl 	: config.sizeMl,
+			minV 	: configs[kegNum].minV,
+			maxV 	: configs[kegNum].maxV,
+			sizeMl 	: configs[kegNum].sizeMl,
 		}
 	}
 
 	$.ajax({
 		type: 'POST',
-		url: '/kegConfig/'+config.kegNum,
+		url: '/kegConfig/'+kegNum,
 		data: JSON.stringify(dToSend),
 		success: function(data) { 
-			toastr.success('Keg '+ (config.kegNum+1) +" Saved")
+			toastr.success('Keg '+ (kegNum+1) +" Saved")
 
 		},
 		error: function(data){
@@ -149,49 +154,62 @@ function getChartOptions (config) {
 function getChartData (currentConfig,samp) {
 
 	var data = [];
-	for (var i = 0; i < samp.length; i++) {
-		var c = samp[i];
-		data.push({x:Date.parse(c.recordedAt),y:c.value})
-	};
+	if(samp){
+		for (var i = 0; i < samp.length; i++) {
+			var c = samp[i];
+			data.push({x:Date.parse(c.recordedAt),y:c.value})
+		};
 
-	var minData = [{
-		x:getClosestTimeToSensorValue(currentConfig.minV,samp),
-		y:currentConfig.minV,
-		r:3
-	}];
-
-
-	var maxData = [{
-		x:getClosestTimeToSensorValue(currentConfig.maxV,samp),
-		y:currentConfig.maxV,
-		r:3
-	}];
+		var minData = [{
+			x:getClosestTimeToSensorValue(currentConfig.minV,samp),
+			y:currentConfig.minV,
+			r:3
+		}];
 
 
+		var maxData = [{
+			x:getClosestTimeToSensorValue(currentConfig.maxV,samp),
+			y:currentConfig.maxV,
+			r:3
+		}];
+	}
 
-	return [
-			    {
+
+
+	var chartData = [];
+
+	if(data){
+		chartData.push({
 			      label: '',
 			      strokeColor: "blue",
 			      pointColor: "blue",
 			      pointStrokeColor: '#fff',
 			      data: data
-			    },
-			    {
+			    })
+	}
+
+	if(minData){
+		chartData.push({
 			      label: 'min',
 			      strokeColor: "purple",
 			      pointColor: "purple",
 			      pointStrokeColor: '#fff',
 			      data: minData
-			    },
-			    {
+			    })
+	}
+
+	if(maxData){
+		chartData.push({
 			      label: 'max',
 			      strokeColor: "red",
 			      pointColor: "red",
 			      pointStrokeColor: '#fff',
 			      data: maxData
-			    }
-			  ];
+			    })
+	}
+
+	return chartData;
+
 }
 
 
@@ -228,7 +246,11 @@ function fillAllViews () {
 	// body...
 	var holder = $("#configHolder");
 	for (var i = 0; i < configs.length; i++) {
-		var currK = configs[i].kegNum
+		var currK = i
+		if(configs[i]){
+			currK = configs[i].kegNum;
+		}
+		
 		var newDiv = createKegDiv(configs[i]);
 		holder.append(newDiv); 
 		addChartAfterAppend(newDiv,configs[i],sensorData[currK])
@@ -242,6 +264,8 @@ function scrollToHash(){
 	    $('html, body').animate({
 	        scrollTop: $(window.location.hash).offset().top
 	    }, 1000);
+	    $(window.location.hash).css("text-decoration", "underline");
+
 	}
 }
 

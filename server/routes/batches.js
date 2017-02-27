@@ -19,5 +19,22 @@ module.exports = function(app, passport) {
 
     });
 
+    app.post('/batch/new', isLoggedIn, function(req, res) {
+
+        var beerName = req.body.beer.name;
+        var beerColor = req.body.beer.color;
+        var kegNum = parseInt(req.body.kegNum);
+
+        db.setNewBatch (req.user,kegNum,beerName,beerColor,function(err){
+            if(!err){
+                res.send({'success':true});
+            }else{
+                res.status(500).send(err);
+            }
+            
+        })
+
+    });
+
 };
 

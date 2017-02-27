@@ -2,7 +2,7 @@
 
 
 
-function createBatchDiv (batch) {
+function createBatchDiv (batch,i) {
 	// body...
 
 
@@ -27,7 +27,7 @@ function createBatchDiv (batch) {
 
 
 		if(isAdmin)
-			mainDiv.append(createAdminBatchBar(batch));
+			mainDiv.append(createAdminBatchBar(batch,i));
 
 
 
@@ -52,6 +52,11 @@ function createBatchDiv (batch) {
 		
 		mainDiv.append(chartCan);
 	}else{
+
+		if(isAdmin)
+			mainDiv.append(createAdminBatchBar(batch,i));
+
+
 		var errorDiv = $("<div>");
 		errorDiv.addClass("error")
 		errorDiv.html("Oh No! Somthing went wrong.<BR> The boffins think the problem is:<BR><B>"+batch.error+"</b><BR>Whatever that means...")
@@ -63,7 +68,7 @@ function createBatchDiv (batch) {
 	return mainDiv
 }
 
-function createAdminBatchBar(batch){
+function createAdminBatchBar(batch,i){
 	var adminDiv = $("<div>")
 	adminDiv.addClass("adminBar")
 	
@@ -75,7 +80,7 @@ function createAdminBatchBar(batch){
 	},
 	function (msg) {
 		toastr.error("ERROR:" + msg)
-	})
+	},i)
 
 	var changeSettingsBtn = $("<a href=\"/setup#KegNum"+batch.kegNum+"\" type=\"button\" class=\"btn btn-default\" aria-label=\"New Batch\"> <span class=\"glyphicon glyphicon-wrench\" aria-hidden=\"true\"></span></a>")
 	adminDiv.append(changeSettingsBtn)
@@ -162,7 +167,13 @@ function createTemperatureDiv () {
 
 	var numberDiv = $("<span>");
 	numberDiv.addClass("value")
-	numberDiv.html(cToTemperatureUnits(getLastTemeprature()));
+
+	var temperature = getLastTemeprature();
+	if(temperature != "?"){
+		temperature = cToTemperatureUnits(temperature);
+	}
+
+	numberDiv.html(temperature);
 	var unitsDiv = $("<span>");
 	unitsDiv.html(temperatureUnits.shortName);
 
@@ -195,7 +206,11 @@ function createTemperatureDiv () {
 
 
 function getLastTemeprature () {
-	return temperatures[temperatures.length-1].value
+	if(temperatures.length > 0){
+		return temperatures[temperatures.length-1].value;
+	}else{
+		return "?";
+	}
 }
 
 
@@ -258,7 +273,7 @@ function fillAllViews () {
 	// body...
 	var holder = $("#batchHolder");
 	for (var i = 0; i < batches.length; i++) {
-		var newDiv = createBatchDiv(batches[i]);
+		var newDiv = createBatchDiv(batches[i],i);
 		holder.append(newDiv); 
 		addChartAfterAppend(newDiv,batches[i])
 	};

@@ -19,10 +19,14 @@ module.exports = function(app, passport) {
         displayBatchView(req.user, res,{admin:true});
     });
 
-    app.get('/batches/:viewKey', function(req, res) {
+    app.get('/batches/:viewKey', function(req, res,next) {
 
         db.findUserByViewKey(req.params.viewKey,function (err,user) {
-            displayBatchView(user,res,{})
+            if(user){
+                displayBatchView(user,res,{})
+            }else{
+                next();
+            }
         })
         
     });

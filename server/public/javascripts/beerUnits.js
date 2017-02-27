@@ -5,7 +5,7 @@ class BeerUnitManager{
   	constructor(){
   		this.beerUnits = [
 			{
-				name:"Imperial Pint",
+				name:"Imperial Pints",
 		        sizeInML: 568  
 			},
 			{
@@ -50,6 +50,7 @@ class BeerUnitManager{
 			var i = select.val();
 			if(i>=0){
 				manager.fillUIFeildsWithSelection(manager.beerUnits[i]);
+				manager.setCurrentBeerUnits ();
 			}
 		});
 	}
@@ -85,7 +86,7 @@ class BeerUnitManager{
 		})
 	}
 
-	setCurrentBeerUnits (argument) {
+	setCurrentBeerUnits () {
 		currentBeerUnits = {"name":$("#beerUnitName").val(),"sizeInML":parseFloat($("#beerUnitSize").val())}
 	}
 

@@ -15,13 +15,7 @@ module.exports = function(app, passport) {
 
         db.getCurrentKegConfigs(req.user,function(err,configs){
 
-        	var kegs = [];
-        	for (var i = 0; i < configs.length; i++) {
-                if(configs[i]){
-                    kegs.push(configs[i].kegNum)
-                }
-
-        	};
+        	var kegs = [0,1];
 
         	db.getSensorDataForLast(req.user,kegs,3*60*60*1000,function(err,sensorData){
 	           	res.render('setup.jade', 

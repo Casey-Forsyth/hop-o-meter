@@ -1,4 +1,4 @@
-//var toSet = require('./mongodb.js')
-var toSet = require('./stub.js')
+var toSet = require('./mongodb.js')
+var unusedtoSet = require('./stub.js')
 
 module.exports = toSet;

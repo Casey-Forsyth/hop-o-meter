@@ -38,7 +38,7 @@ function process (singleConfig,rawSignals) {
 
 	for (var i = 0; i < rawSignals.length; i++) {
 		var t = rawSignals[i].recordedAt;
-		var ml = mlPerV * rawSignals[i].value;
+		var ml = mlPerV * (rawSignals[i].value - min);
 		out.push({t:t.getTime()	,ml:ml});
 	};
 

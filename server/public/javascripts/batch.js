@@ -117,8 +117,10 @@ function getChartData (batch) {
 
 	var data = [];
 	var mls = batch.ml
+	var d = new Date();
 	for (var i = 0; i < mls.length; i++) {
-		data.push({x:mls[i].t,y:mlToUnits(mls[i].ml)})
+		var tWithOffset = mls[i].t - (d.getTimezoneOffset() * 60 * 1000);
+		data.push({x:tWithOffset,y:mlToUnits(mls[i].ml)})
 	};
 
 
@@ -139,7 +141,11 @@ function getLastML (batch) {
 }
 
 function mlToUnits (ml) {
-	return Math.floor(ml/batchView.sizeInML)
+	var out = Math.floor(ml/batchView.sizeInML);
+	if(out<0){
+		out = 0;
+	}
+	return out;
 }
 
 

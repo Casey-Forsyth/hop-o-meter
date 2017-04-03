@@ -85,9 +85,10 @@ function getSensorPoint (user,kegNum,start,end,cb){
 
 	SensorPoint.find({ 'user' :  user,
 					'kegNum':kegNum,
-					'recordedAt':{ $gt: start, $lt: end } 
-				}, 
-				function(err, points) {
+					'recordedAt':{ $gt: start, $lt: end },
+				} 
+				).sort('recordedAt')
+				.exec(function(err, points) {
 			   		cb(err,points,kegNum);
 			   	});
 }
@@ -147,9 +148,8 @@ function setNewBatch (user,kegNum,beerName,beerColor,cb) {
 
 function getNewestBatches (user,cb) {
 
-	var out = [];
+	var out = [null,null];
 	var kegs = [0,1];
-	var dataCount = 0;
 	var errorFound = false;
 
 
@@ -165,12 +165,11 @@ function getNewestBatches (user,cb) {
 			if(!data){
 				data = {error:"No Batch Set"};
 			}
-			out.push(data);
-			dataCount++;
+			out[data.kegNum] = data;
 
 			
 
-			if(dataCount >= kegs.length){
+			if(out[0] && out[1]){
 				cb(null,out);
 			} 
 
@@ -181,7 +180,7 @@ function getNewestBatches (user,cb) {
 
 function getCurrentKegConfigs (user,cb) {
 
-	var out = [];
+	var out = [null,null];
 	var kegs = [0,1];
 	var dataCount = 0;
 	var errorFound = false;
@@ -199,10 +198,10 @@ function getCurrentKegConfigs (user,cb) {
 				errorFound = true;
 				data = {error:"None Set"}
 			}
-			out.push( data )
+			out[data.kegNum] =  data 
 			dataCount++;
 
-			if(dataCount >= kegs.length && !errorFound){
+			if(out[0] != null && out[1]!= null){
 				cb(null,out);
 			} 
 

@@ -1,7 +1,6 @@
 body {
   padding: 1em;
   font-family: 'Source Sans Pro', sans-serif;
-
 }
 
 a {
@@ -22,7 +21,7 @@ h1{
 
 .batchDiv .number{
 	    text-align: center;
-	    font-size:7em;
+	    font-size:6em;
 }
 
 .batchDiv .units{
@@ -50,7 +49,7 @@ h1{
 
 .temperatureValue{
 	text-align: center;
-	margin-top: 3em;
+	margin-top: 0em;
 }
 
 .temperatureValue .value{
@@ -67,4 +66,8 @@ hr {
 
 .palette-color-picker-button{
 	margin-left: 0.5em;
+}
+
+canvas{
+	margin-top: 1em;
 }

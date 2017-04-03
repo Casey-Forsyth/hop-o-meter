@@ -201,7 +201,7 @@ function createTemperatureDiv () {
 	temperatureChartDiv.addClass("temperatureChart")
 
 
-	var chartCan = $("<canvas height='100'>");
+	var chartCan = $("<canvas height='60'>");
 	temperatureChartDiv.append(chartCan);
 
 

@@ -154,21 +154,24 @@ function getChartOptions (config) {
 function getChartData (currentConfig,samp) {
 
 	var data = [];
+	var d = new Date();
+
 	if(samp){
 		for (var i = 0; i < samp.length; i++) {
 			var c = samp[i];
-			data.push({x:Date.parse(c.recordedAt),y:c.value})
+			var timeWithOffset = Date.parse(c.recordedAt) - (d.getTimezoneOffset() * 60 * 1000)
+			data.push({x:timeWithOffset ,y:c.value})
 		};
 
 		var minData = [{
-			x:getClosestTimeToSensorValue(currentConfig.minV,samp),
+			x:getClosestTimeToSensorValue(currentConfig.minV,samp) - (d.getTimezoneOffset() * 60 * 1000),
 			y:currentConfig.minV,
 			r:3
 		}];
 
 
 		var maxData = [{
-			x:getClosestTimeToSensorValue(currentConfig.maxV,samp),
+			x:getClosestTimeToSensorValue(currentConfig.maxV,samp) - (d.getTimezoneOffset() * 60 * 1000),
 			y:currentConfig.maxV,
 			r:3
 		}];

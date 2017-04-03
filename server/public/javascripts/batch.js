@@ -249,8 +249,12 @@ function cToTemperatureUnits (c){
 function getTemperatureChartData () {
 
 	var data = [];
+	var d = new Date();
+
 	for (var i = 0; i < temperatures.length; i++) {
-		data.push({x:new Date(temperatures[i].recordedAt).getTime(),y:cToTemperatureUnits(temperatures[i].value)})
+		var tWithOffset = new Date(temperatures[i].recordedAt).getTime() - (d.getTimezoneOffset() * 60 * 1000);
+
+		data.push({x:tWithOffset,y:cToTemperatureUnits(temperatures[i].value)})
 	};
 
 
